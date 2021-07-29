@@ -14,7 +14,6 @@ object Backend {
 		return withContext(Dispatchers.IO) {
 			delay(1000)
 			when (password) {
-				"z" -> Error(ServerException("incorrect credentials"))
 				"a" -> Success(Token(UUID.randomUUID().toString()))
 				else -> Error(IOException())
 			}
@@ -24,5 +23,3 @@ object Backend {
 }
 
 data class Token(val token: String)
-
-class ServerException(message: String) : Exception(message)
