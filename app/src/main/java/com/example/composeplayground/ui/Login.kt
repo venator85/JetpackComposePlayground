@@ -89,7 +89,7 @@ fun Login(navController: NavHostController) {
 	when (val loginResponseValue = loginResponse) {
 		is NetworkResource.Success -> {
 			navController.navigate("home") {
-//				popUpTo("login") { inclusive = true } // commented due to https://issuetracker.google.com/issues/194301889
+				popUpTo("login") { inclusive = true }
 			}
 			loginResponse = null
 		}
