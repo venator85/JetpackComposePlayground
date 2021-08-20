@@ -47,7 +47,7 @@ fun DefaultPreview() {
 @Composable
 fun App() {
 	val navController = rememberNavController()
-	NavHost(navController = navController, startDestination = "login") {
+	NavHost(navController = navController, startDestination = "home") {
 		composable("login") { Login(navController) }
 		composable("home") { Home(navController) }
 	}
