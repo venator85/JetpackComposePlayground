@@ -1,12 +1,11 @@
 plugins {
 	id("com.android.application")
 	id("kotlin-android")
-	id("com.github.ben-manes.versions").version("0.39.0")
 	id("kotlin-kapt")
 }
 
 android {
-	compileSdk = 30
+	compileSdk = 31
 
 	defaultConfig {
 		applicationId = "com.example.composeplayground"
@@ -33,7 +32,7 @@ android {
 		compose = true
 	}
 	composeOptions {
-		kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+		kotlinCompilerExtensionVersion = "1.0.1"
 	}
 }
 
@@ -48,11 +47,10 @@ dependencies {
 	implementation("androidx.datastore:datastore-preferences:1.0.0")
 	implementation("androidx.datastore:datastore:1.0.0")
 
-	implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-	implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-	implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
 	implementation("androidx.activity:activity-compose:1.3.1")
-	implementation("androidx.navigation:navigation-compose:2.4.0-alpha06")
+	implementation("androidx.compose.material:material:1.0.1")
+	implementation("androidx.compose.ui:ui-tooling:1.0.1")
+	implementation("androidx.navigation:navigation-compose:2.4.0-alpha07")
 
 }
 
