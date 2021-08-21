@@ -41,14 +41,14 @@ fun Home(navController: NavHostController) {
 	}
 }
 
-data class Puppy(
+private data class Puppy(
 	val id: Int,
 	val name: String = "Dog $id",
 	var adopted: Boolean = id.rem(4) == 0,
 )
 
 @Composable
-fun PuppyItem(puppy: Puppy, position: Int, last: Boolean, onClick: (Int) -> Unit) {
+private fun PuppyItem(puppy: Puppy, position: Int, last: Boolean, onClick: (Int) -> Unit) {
 	Card(
 		modifier = Modifier
 			.fillMaxWidth()
