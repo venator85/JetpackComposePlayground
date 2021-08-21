@@ -1,5 +1,7 @@
 package com.example.composeplayground.ui
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,26 +12,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
 
+@ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Preview
 @Composable
 fun ListWithSections() {
 	val puppiesState = remember {
 		mutableStateListOf<PuppyModel>().apply {
-			for (i in 1..20) {
+			for (i in 1..40) {
 				add(PuppyModel(i))
 			}
 		}
@@ -37,6 +41,7 @@ fun ListWithSections() {
 	PuppyList(puppiesState)
 }
 
+@ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
 private fun PuppyList(puppiesState: SnapshotStateList<PuppyModel>) {
@@ -46,8 +51,8 @@ private fun PuppyList(puppiesState: SnapshotStateList<PuppyModel>) {
 
 	val expansionState = remember {
 		mutableStateMapOf<Breed, Boolean>().apply {
-			Breed.values().forEach { breed ->
-				this[breed] = true
+			Breed.values().forEachIndexed { index, breed ->
+				this[breed] = index == 0
 			}
 		}
 	}
@@ -79,8 +84,12 @@ private fun PuppyList(puppiesState: SnapshotStateList<PuppyModel>) {
 				stickyHeader {
 					PuppyBreedItem(breed, expanded, toggleExpansion)
 				}
-				if (expanded) {
-					itemsIndexed(puppies) { idx, puppy ->
+				itemsIndexed(puppies) { idx, puppy ->
+					AnimatedVisibility(
+						visible = expanded,
+						enter = expandVertically() + fadeIn(),
+						exit = shrinkVertically() + fadeOut()
+					) {
 						PuppyItem(puppy, idx == puppies.lastIndex, toggleAdoption)
 					}
 				}
@@ -120,11 +129,13 @@ private fun PuppyBreedItem(breed: Breed, expanded: Boolean, onClick: (Breed) -> 
 			modifier = Modifier
 				.weight(1f)
 		)
-		if (expanded) {
-			Text(text = """🔼""")
-		} else {
-			Text(text = """🔽""")
-		}
+
+		val degrees by animateFloatAsState(if (expanded) 0f else 180f)
+		Icon(
+			imageVector = Icons.Default.KeyboardArrowUp,
+			contentDescription = "Collapse",
+			modifier = Modifier.rotate(degrees)
+		)
 	}
 }
 
