@@ -1,5 +1,6 @@
 package com.example.composeplayground.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
 
+@ExperimentalFoundationApi
 @Preview
 @Composable
 fun ListWithSections() {
@@ -35,6 +37,7 @@ fun ListWithSections() {
 	PuppyList(puppiesState)
 }
 
+@ExperimentalFoundationApi
 @Composable
 private fun PuppyList(puppiesState: SnapshotStateList<PuppyModel>) {
 	val groupedPuppies = puppiesState.groupBy {
@@ -50,7 +53,7 @@ private fun PuppyList(puppiesState: SnapshotStateList<PuppyModel>) {
 	}
 
 	val toggleAdoption: (PuppyModel) -> Unit = { puppy ->
-		// assignment to puppies[i] calls the set() method of SnapshotStateList,
+		// assignment calls the set() method of SnapshotStateList,
 		// that re-evaluates the equals of the list,
 		// that re-evaluates the equals of each item in the list,
 		// and that triggers a recomposition, showing the updated PuppyItem
@@ -73,7 +76,7 @@ private fun PuppyList(puppiesState: SnapshotStateList<PuppyModel>) {
 				breed.name
 			}.forEach { (breed, puppies) ->
 				val expanded = expansionState.getOrDefault(breed, true)
-				item {
+				stickyHeader {
 					PuppyBreedItem(breed, expanded, toggleExpansion)
 				}
 				if (expanded) {
